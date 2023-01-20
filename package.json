@@ -1,0 +1,32 @@
+{
+  "name": "poc1-typescript",
+  "version": "1.0.0",
+  "description": "POC 1 da Driven - TypeScript",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcfernandez/driven-poc1-typescript.git"
+  },
+  "keywords": [
+    "driven",
+    "poc",
+    "typescript",
+    "api",
+    "node",
+    "express",
+    "javascript",
+    "sql",
+    "postgres",
+    "lcfernandez"
+  ],
+  "author": "lcfernandez",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/lcfernandez/driven-poc1-typescript/issues"
+  },
+  "homepage": "https://github.com/lcfernandez/driven-poc1-typescript#readme"
+}
