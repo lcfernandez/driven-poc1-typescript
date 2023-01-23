@@ -1,14 +1,13 @@
-import { QueryResult } from "pg";
 import { connectionDB } from "../database.js";
 import { Recipe, RecipeEntity } from "../protocols.js";
 
-export async function recipeInsert(recipe: Recipe): Promise<QueryResult> {
+export async function recipeInsert(recipe: Recipe): Promise<void> {
     const { name, ingredients, directions } = recipe;
-    const insert = await connectionDB.query(`INSERT INTO recipes (name, ingredients, directions) VALUES ($1, $2, $3);`, [name, ingredients, directions]);
-
-    return insert;
+    await connectionDB.query(`INSERT INTO recipes (name, ingredients, directions) VALUES ($1, $2, $3);`, [name, ingredients, directions]);
 }
 
-// export async function recipeSelectByName(name: string): Promise<QueryResult<RecipeEntity>> {
-//     return await connectionDB.query(`SELECT FROM recipes WHERE name ILIKE $1;`, [name]);
-// }
+export async function recipesSelect(): Promise<RecipeEntity[]> {
+    const select = await connectionDB.query(`SELECT * FROM recipes;`);
+    
+    return select.rows as RecipeEntity[];
+}
