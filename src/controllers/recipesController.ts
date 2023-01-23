@@ -6,7 +6,11 @@ export async function recipesDelete(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
-        await recipesDeleteById(Number(id));
+        const result = await recipesDeleteById(id);
+
+        if (!result) {
+            return res.sendStatus(404);
+        }
 
         res.sendStatus(200);
     } catch (err) {

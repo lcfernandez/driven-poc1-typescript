@@ -2,11 +2,10 @@ import { QueryResult, QueryResultRow } from "pg";
 import { connectionDB } from "../database.js";
 import { Recipe, RecipeEntity } from "../protocols.js";
 
-export async function recipeDelete(id: number): Promise<void> {
-    await connectionDB.query(
-        `DELETE FROM recipes WHERE id = $1;`,
-        [id]
-    );
+export async function recipeDelete(id: string): Promise<number> {
+    const result = await connectionDB.query(`DELETE FROM recipes WHERE id = $1;`, [id]) as QueryResultRow;
+
+    return result.rowCount;
 }
 
 export async function recipeInsert(recipe: Recipe): Promise<number> {
