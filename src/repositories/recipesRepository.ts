@@ -16,6 +16,12 @@ export async function recipeInsert(recipe: Recipe): Promise<number> {
     return result.rowCount;
 }
 
+export async function recipeSelectById(id: string): Promise<number> {
+    const result = await connectionDB.query(`SELECT * FROM recipes WHERE id = $1;`, [id]) as QueryResultRow;
+    
+    return result.rowCount;
+}
+
 export async function recipeSelectByName(name: string): Promise<RecipeEntity> {
     const result = await connectionDB.query(`SELECT * FROM recipes WHERE name ILIKE $1;`, [name]) as QueryResultRow;
     
@@ -34,10 +40,12 @@ export async function recipesRankingSelect(): Promise<RecipeEntity[]> {
     return rows;
 }
 
-export async function recipeUpdate(recipe: Recipe, id: number): Promise<void> {
+export async function recipeUpdate(recipe: Recipe, id: string): Promise<number> {
     const { name, ingredients, directions, done_at, rating } = recipe;
-    await connectionDB.query(
+    const result = await connectionDB.query(
         `UPDATE recipes SET name = $1, ingredients = $2, directions = $3, done_at = $4, rating = $5 WHERE id = $6;`,
         [name, ingredients, directions, done_at, rating, id]
-    );
+    ) as QueryResultRow;
+
+    return result.rowCount;
 }

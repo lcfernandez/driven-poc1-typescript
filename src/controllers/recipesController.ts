@@ -42,9 +42,13 @@ export async function recipesPut(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
-        await recipesUpdateById(req.body, Number(id));
+        const result = await recipesUpdateById(req.body, id);
 
-        res.sendStatus(200);
+        if (result) {
+            return res.sendStatus(200);
+        }
+
+        res.sendStatus(404);
     } catch (err) {
         res.status(500).send(err.message);
     }

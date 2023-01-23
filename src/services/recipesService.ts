@@ -1,6 +1,5 @@
-import { response, Response } from "express";
-import { Recipe, RecipeEntity } from "../protocols.js";
-import { recipeDelete, recipeInsert, recipeSelectByName, recipesRankingSelect, recipesSelect, recipeUpdate } from "../repositories/recipesRepository.js";
+import { Recipe } from "../protocols.js";
+import { recipeDelete, recipeInsert, recipeSelectById, recipeSelectByName, recipesRankingSelect, recipesSelect, recipeUpdate } from "../repositories/recipesRepository.js";
 
 export async function recipesDeleteById(id: number) {
     await recipeDelete(id);
@@ -30,6 +29,17 @@ export async function recipesRankingRetrieve() {
     return recipes;
 };
 
-export async function recipesUpdateById(recipe: Recipe, id: number) {
-    await recipeUpdate(recipe, id);
+export async function recipesUpdateById(recipe: Recipe, id: string) {
+    if (isNaN(Number(id))) {
+        return;
+    }
+    
+    const recipeExists = await recipeSelectById(id);
+
+    if (!recipeExists) {
+        return;
+    }
+
+    const result = await recipeUpdate(recipe, id);
+    return result;
 };
