@@ -1,6 +1,13 @@
 import { connectionDB } from "../database.js";
 import { Recipe, RecipeEntity } from "../protocols.js";
 
+export async function recipeDelete(id: number): Promise<void> {
+    await connectionDB.query(
+        `DELETE FROM recipes WHERE id = $1;`,
+        [id]
+    );
+}
+
 export async function recipeInsert(recipe: Recipe): Promise<void> {
     const { name, ingredients, directions } = recipe;
     await connectionDB.query(`INSERT INTO recipes (name, ingredients, directions) VALUES ($1, $2, $3);`, [name, ingredients, directions]);
