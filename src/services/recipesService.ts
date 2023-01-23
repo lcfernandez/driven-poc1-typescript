@@ -1,5 +1,30 @@
 import { Recipe } from "../protocols.js";
-import { recipeDelete, recipeInsert, recipeSelectById, recipeSelectByName, recipesRankingSelect, recipesSelect, recipeUpdate } from "../repositories/recipesRepository.js";
+import {
+    ratingRecipeUpdate,
+    recipeDelete,
+    recipeInsert,
+    recipeSelectById,
+    recipeSelectByName,
+    recipesRankingSelect,
+    recipesSelect,
+    recipeUpdate
+} from "../repositories/recipesRepository.js";
+
+export async function ratingRecipesById(rating: number, id: string) {
+    if (isNaN(Number(id))) {
+        return;
+    }
+    
+    const recipeExists = await recipeSelectById(id);
+
+    if (!recipeExists) {
+        return;
+    }
+
+    const result = await ratingRecipeUpdate(rating, id);
+    
+    return result;
+};
 
 export async function recipesDeleteById(id: string) {
     if (isNaN(Number(id))) {
@@ -53,5 +78,6 @@ export async function recipesUpdateById(recipe: Recipe, id: string) {
     }
 
     const result = await recipeUpdate(recipe, id);
+
     return result;
 };

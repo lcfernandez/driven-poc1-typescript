@@ -2,6 +2,12 @@ import { QueryResult, QueryResultRow } from "pg";
 import { connectionDB } from "../database.js";
 import { Recipe, RecipeEntity } from "../protocols.js";
 
+export async function ratingRecipeUpdate(rating: number, id: string): Promise<number> {
+    const result = await connectionDB.query(`UPDATE recipes SET rating = $1 WHERE id = $2;`, [rating, id]) as QueryResultRow;
+
+    return result.rowCount;
+}
+
 export async function recipeDelete(id: string): Promise<number> {
     const result = await connectionDB.query(`DELETE FROM recipes WHERE id = $1;`, [id]) as QueryResultRow;
 
@@ -40,10 +46,10 @@ export async function recipesRankingSelect(): Promise<RecipeEntity[]> {
 }
 
 export async function recipeUpdate(recipe: Recipe, id: string): Promise<number> {
-    const { name, ingredients, directions, done_at, rating } = recipe;
+    const { name, ingredients, directions } = recipe;
     const result = await connectionDB.query(
-        `UPDATE recipes SET name = $1, ingredients = $2, directions = $3, done_at = $4, rating = $5 WHERE id = $6;`,
-        [name, ingredients, directions, done_at, rating, id]
+        `UPDATE recipes SET name = $1, ingredients = $2, directions = $3 WHERE id = $4;`,
+        [name, ingredients, directions, id]
     ) as QueryResultRow;
 
     return result.rowCount;

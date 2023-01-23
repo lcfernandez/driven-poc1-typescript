@@ -1,6 +1,30 @@
-import { recipesCreate, recipesDeleteById, recipesRankingRetrieve, recipesRetrieve, recipesUpdateById } from "../services/recipesService.js";
+import {
+    ratingRecipesById,
+    recipesCreate,
+    recipesDeleteById,
+    recipesRankingRetrieve,
+    recipesRetrieve,
+    recipesUpdateById
+} from "../services/recipesService.js";
 
 import { Request, Response } from "express";
+
+export async function ratingPost(req: Request, res: Response) {
+    const { id } = req.params;
+    const { rating } = req.body;
+
+    try {
+        const result = await ratingRecipesById(rating, id);
+
+        if (result) {
+            return res.sendStatus(200);
+        }
+
+        res.sendStatus(404);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
 
 export async function recipesDelete(req: Request, res: Response) {
     const { id } = req.params;
@@ -52,7 +76,7 @@ export async function recipesPut(req: Request, res: Response) {
             return res.sendStatus(200);
         }
 
-        res.sendStatus(404);
+        res.sendStatus(404);    
     } catch (err) {
         res.status(500).send(err.message);
     }

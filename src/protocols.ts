@@ -3,7 +3,6 @@ export type RecipeEntity = {
     name: string,
 	ingredients: string,
 	directions: string,
-	done_at?: Date,
 	rating?: number
 };
 
