@@ -26,9 +26,13 @@ export async function recipesGet(req: Request, res: Response) {
 
 export async function recipesPost(req: Request, res: Response) {
     try {
-        await recipesCreate(req.body);
+        const result = await recipesCreate(req.body);
 
-        res.sendStatus(201);
+        if (result) {
+            return res.sendStatus(201);
+        }
+
+        res.sendStatus(409);
     } catch (err) {
         res.status(500).send(err.message);
     }

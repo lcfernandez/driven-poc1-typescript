@@ -1,3 +1,4 @@
+import { QueryResult, QueryResultRow } from "pg";
 import { connectionDB } from "../database.js";
 import { Recipe, RecipeEntity } from "../protocols.js";
 
@@ -8,21 +9,29 @@ export async function recipeDelete(id: number): Promise<void> {
     );
 }
 
-export async function recipeInsert(recipe: Recipe): Promise<void> {
+export async function recipeInsert(recipe: Recipe): Promise<number> {
     const { name, ingredients, directions } = recipe;
-    await connectionDB.query(`INSERT INTO recipes (name, ingredients, directions) VALUES ($1, $2, $3);`, [name, ingredients, directions]);
+    const result = await connectionDB.query(`INSERT INTO recipes (name, ingredients, directions) VALUES ($1, $2, $3);`, [name, ingredients, directions]) as QueryResultRow;
+    
+    return result.rowCount;
+}
+
+export async function recipeSelectByName(name: string): Promise<RecipeEntity> {
+    const result = await connectionDB.query(`SELECT * FROM recipes WHERE name ILIKE $1;`, [name]) as QueryResultRow;
+    
+    return result.rowCount;
 }
 
 export async function recipesSelect(): Promise<RecipeEntity[]> {
-    const select = await connectionDB.query(`SELECT * FROM recipes;`);
+    const { rows } = await connectionDB.query(`SELECT * FROM recipes;`) as QueryResult<RecipeEntity>;
     
-    return select.rows as RecipeEntity[];
+    return rows;
 }
 
 export async function recipesRankingSelect(): Promise<RecipeEntity[]> {
-    const select = await connectionDB.query(`SELECT * FROM recipes WHERE rating > 0 ORDER BY rating DESC;`);
+    const { rows } = await connectionDB.query(`SELECT * FROM recipes WHERE rating > 0 ORDER BY rating DESC;`) as QueryResult<RecipeEntity>;
     
-    return select.rows as RecipeEntity[];
+    return rows;
 }
 
 export async function recipeUpdate(recipe: Recipe, id: number): Promise<void> {
