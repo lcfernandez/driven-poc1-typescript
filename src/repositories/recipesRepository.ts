@@ -19,6 +19,12 @@ export async function recipesSelect(): Promise<RecipeEntity[]> {
     return select.rows as RecipeEntity[];
 }
 
+export async function recipesRankingSelect(): Promise<RecipeEntity[]> {
+    const select = await connectionDB.query(`SELECT * FROM recipes WHERE rating > 0 ORDER BY rating DESC;`);
+    
+    return select.rows as RecipeEntity[];
+}
+
 export async function recipeUpdate(recipe: Recipe, id: number): Promise<void> {
     const { name, ingredients, directions, done_at, rating } = recipe;
     await connectionDB.query(

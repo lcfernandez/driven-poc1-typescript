@@ -1,4 +1,4 @@
-import { recipesCreate, recipesDeleteById, recipesRetrieve, recipesUpdateById } from "../services/recipesService.js";
+import { recipesCreate, recipesDeleteById, recipesRankingRetrieve, recipesRetrieve, recipesUpdateById } from "../services/recipesService.js";
 
 import { Request, Response } from "express";
 
@@ -41,6 +41,16 @@ export async function recipesPut(req: Request, res: Response) {
         await recipesUpdateById(req.body, Number(id));
 
         res.sendStatus(200);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+export async function recipesRankingGet(req: Request, res: Response) {
+    try {
+        const recipes = await recipesRankingRetrieve();
+
+        res.send(recipes);
     } catch (err) {
         res.status(500).send(err.message);
     }
