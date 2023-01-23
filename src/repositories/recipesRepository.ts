@@ -11,3 +11,11 @@ export async function recipesSelect(): Promise<RecipeEntity[]> {
     
     return select.rows as RecipeEntity[];
 }
+
+export async function recipeUpdate(recipe: Recipe, id: number): Promise<void> {
+    const { name, ingredients, directions, done_at, rating } = recipe;
+    await connectionDB.query(
+        `UPDATE recipes SET name = $1, ingredients = $2, directions = $3, done_at = $4, rating = $5 WHERE id = $6;`,
+        [name, ingredients, directions, done_at, rating, id]
+    );
+}

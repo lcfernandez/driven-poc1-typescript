@@ -1,4 +1,4 @@
-import { recipesGet, recipesPost } from "../controllers/recipesController.js";
+import { recipesGet, recipesPost, recipesPut } from "../controllers/recipesController.js";
 import { recipesSchema } from "../schemas/recipesSchema.js";
 
 import { Router } from "express";
@@ -8,5 +8,6 @@ const router = Router();
 
 router.get("/recipes", recipesGet);
 router.post("/recipes", validateBody(recipesSchema), recipesPost);
+router.put("/recipes/:id", validateBody(recipesSchema), recipesPut);
 
 export default router;

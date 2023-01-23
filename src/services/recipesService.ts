@@ -1,7 +1,7 @@
 import { Recipe } from "../protocols.js";
-import { recipeInsert, recipesSelect } from "../repositories/recipesRepository.js";
+import { recipeInsert, recipesSelect, recipeUpdate } from "../repositories/recipesRepository.js";
 
-export async function recipeCreate(recipe: Recipe) {
+export async function recipesCreate(recipe: Recipe) {
     await recipeInsert(recipe);
 };
 
@@ -9,4 +9,8 @@ export async function recipesRetrieve() {
     const recipes = await recipesSelect();
 
     return recipes;
+};
+
+export async function recipesUpdate(recipe: Recipe, id: number) {
+    await recipeUpdate(recipe, id);
 };
